@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "title": "Wireless Bluetooth Headphones",
+    "description": "Over-ear headphones with noise cancellation and 30-hour battery life.",
+    "category": "electronics",
+    "price": 89.99,
+    "discountPercentage": 15,
+    "rating": 4.5
+  },
+  {
+    "id": 2,
+    "title": "Stainless Steel Water Bottle",
+    "description": "Insulated 32 oz bottle that keeps drinks cold for 24 hours.",
+    "category": "home",
+    "price": 24.5,
+    "discountPercentage": 0,
+    "rating": 4.8
+  },
+  {
+    "id": 3,
+    "title": "Organic Face Moisturizer",
+    "description": "Lightweight daily moisturizer with hyaluronic acid.",
+    "category": "beauty",
+    "price": 32,
+    "discountPercentage": 10.5,
+    "rating": 4.1
+  },
+  {
+    "id": 4,
+    "title": "Running Shoes",
+    "description": "Breathable mesh running shoes with cushioned soles.",
+    "category": "sports",
+    "price": 120,
+    "discountPercentage": 25,
+    "rating": 3.9
+  },
+  {
+    "id": 5,
+    "title": "Ceramic Coffee Mug Set",
+    "description": "Set of four 12 oz mugs, dishwasher and microwave safe.",
+    "category": "home",
+    "price": 18.99,
+    "discountPercentage": 5,
+    "rating": 4.3
+  }
+]
