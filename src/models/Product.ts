@@ -19,4 +19,28 @@ interface Product  {//for one product, how the API sends it
 
 const products: Product[] = productsData;
 
+
+class Product {
+    id: number;
+    title: string;
+    description: string;
+    category: string;
+    price: number;
+    discountPercentage: number;
+    rating: number;
+
+    constructor(product: Product){
+        this.id = product.id
+        this.title = product.title
+        this.description = product.description
+        this.category = product.category
+        this.price = product.price
+        this.discountPercentage = product.discountPercentage
+        this.rating = product.rating
+    }
+
+
+    //create getters so that other code can read valiues
+}
+
 export {products}
