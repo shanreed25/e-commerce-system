@@ -7,7 +7,7 @@ as data, not as JavaScript
 */
 import productsData from '../data/products.json' with {type: "json"};
 
-interface Product  {//for one product, how the API sends it
+interface ProductShape  {//for one product, how the API sends it
     id: number;
     title: string;
     description: string;
@@ -17,19 +17,21 @@ interface Product  {//for one product, how the API sends it
     rating: number;
 }
 
-const products: Product[] = productsData;
+const products: ProductShape[] = productsData;
 
 
 class Product {
-    id: number;
-    title: string;
-    description: string;
-    category: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
+    //private stops code outside the class from reading or changing a value directly
+    //readonly means the value can only be set in the constructor
+    private readonly id: number;
+    private readonly title: string;
+    private readonly description: string;
+    private readonly category: string;
+    private readonly price: number;
+    private readonly discountPercentage: number;
+    private readonly rating: number;
 
-    constructor(product: Product){
+    constructor(product: ProductShape){
         this.id = product.id
         this.title = product.title
         this.description = product.description
