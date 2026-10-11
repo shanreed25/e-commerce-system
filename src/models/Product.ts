@@ -84,7 +84,8 @@ class Product {
   }
 
   #getTaxAmount(): number {
-    return calculateTax(this.#price, this.category);
+    //taxes the discounted price
+    return calculateTax(this.#getPriceWithDiscount(), this.category);
   }
 
   #getFinalPrice() {
