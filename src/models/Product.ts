@@ -41,6 +41,9 @@ class Product {
         this.rating = product.rating
     }
 
+    displayDetails(): string {
+        return `${this.title} are $${this.#price.toFixed(2)} and have a rating of ${this.rating}/5`
+    }
 
     /*create getters so that other code can read valiues
     exposes a private value as read-only from outside

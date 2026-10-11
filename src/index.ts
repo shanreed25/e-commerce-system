@@ -16,3 +16,4 @@ const product1 = {
 const headphones = new Product(product1);
 
 console.log(headphones.cost);
+console.log(headphones.displayDetails());
