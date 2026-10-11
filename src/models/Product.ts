@@ -27,7 +27,7 @@ class Product {
     private readonly title: string;
     private readonly description: string;
     private readonly category: string;
-    private readonly price: number;
+    #price: number;
     private readonly discountPercentage: number;
     private readonly rating: number;
 
@@ -36,13 +36,29 @@ class Product {
         this.title = product.title
         this.description = product.description
         this.category = product.category
-        this.price = product.price
+        this.#price = product.price
         this.discountPercentage = product.discountPercentage
         this.rating = product.rating
     }
 
 
-    //create getters so that other code can read valiues
+    /*create getters so that other code can read valiues
+    exposes a private value as read-only from outside
+    */
+    get cost(): number{
+    return this.#price;
+    }
+
+    set cost(val: number){
+        if (typeof val !== "number" || val < 0) {
+            throw new Error("price must be a number 0 or higher")
+        }
+        this.#price = val;
+    }
+
+
+
+    
 }
 
-export {products}
+export {Product}

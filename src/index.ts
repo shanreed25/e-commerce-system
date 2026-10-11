@@ -1,20 +1,18 @@
-import { products } from "./models/Product.js";
+import { Product } from "./models/Product.js";
 
 
 console.log("E-commerce System Starting.......");
-//console.log("Products:", products);
-console.table(products);  
 
+const product1 = {
+    "id": 1,
+    "title": "Wireless Bluetooth Headphones",
+    "description": "Over-ear headphones with noise cancellation and 30-hour battery life.",
+    "category": "electronics",
+    "price": 89.99,
+    "discountPercentage": 15,
+    "rating": 4.5
+  }
 
+const headphones = new Product(product1);
 
-// fetch('https://dummyjson.com/products/1')
-// .then(res => {
-//     console.log(res.status);
-//     console.log(res.ok);
-//     const body = res.json();
-    
-//     return body;
-// })
-// .then((body) => {
-//     console.log(body);
-// });
+console.log(headphones.cost);
