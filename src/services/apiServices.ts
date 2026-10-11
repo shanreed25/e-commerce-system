@@ -1,4 +1,4 @@
-import type { ProductShape } from "../models/types.js";// 'ProductShape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled
+import type { ProductShape } from "../types/product.js";// 'ProductShape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled
 
 
 const BASE_URL = 'https://dummyjson.com/products';

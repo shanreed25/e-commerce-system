@@ -1,6 +1,6 @@
 import { calculateDiscount } from "../utils/discountCalculator.js";
 import { calculateTax } from "../utils/taxCalculator.js";
-import type { ProductShape } from "./types.js";
+import type { ProductShape } from "../types/product.js";
 
 class Product {
 

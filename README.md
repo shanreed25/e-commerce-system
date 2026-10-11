@@ -30,3 +30,27 @@ npx tsc
 node dist/index.js
 ```
 
+## Project Structure
+```
+ e-commerce-system/
+    ├── src/
+    │   ├── index.ts              Entry point
+    │   ├── data/
+    │   │   └── products.json     Local sample product data
+    │   ├── types/
+    │   │   └── types.ts          ProductShape interface (+ JSON import)
+    │   ├── models/
+    │   │   └── Product.ts        Product class
+    │   ├── services/
+    │   │   └── apiServices.ts    getProductById() for the DummyJSON API
+    │   └── utils/
+    │       ├── discountCalculator.ts
+    │       ├── taxCalculator.ts
+    │       └── errorHandler.ts   (empty)
+    ├── dist/                     Compiled output (gitignored)
+    ├── package.json
+    ├── tsconfig.json
+    ├── .env                      (empty)
+    ├── .gitignore
+    └── README.md
+```
