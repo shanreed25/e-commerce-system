@@ -1,10 +1,34 @@
-import type { ProductShape } from "../types/product.js";// 'ProductShape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled
-
+// 'ProductShape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled
+import type { ProductShape } from "../types/productShape.js";
+import type { ProductsListShape } from "../types/productsListShape.js";
 
 const BASE_URL = 'https://dummyjson.com/products';
 
 
 console.log("API.......");
+
+
+
+export async function getProducts(): Promise<ProductShape[]> {
+    try {
+        const res = await fetch(`${BASE_URL}`)
+
+        if (!res.ok){
+            throw new Error(`Request failed with status ${res.status}`)
+        }
+
+        const data: ProductsListShape = await res.json();
+
+        // data is the wrapper object, not a product, so TypeScript errors here if the return type is not Promise<ProductsListShape>
+        //return data//retuens the whole wrapper
+        return data.products;//return just the array of products, because the return type is Promise<ProductShape[]>
+
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
 
 //returns a Promise of  ProductShape type
 
