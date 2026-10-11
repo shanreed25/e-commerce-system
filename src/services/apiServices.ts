@@ -1,22 +1,39 @@
+import type { ProductShape } from "../models/types.js";// 'ProductShape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled
+
 
 const BASE_URL = 'https://dummyjson.com/products';
 
 
 console.log("API.......");
 
-export async function getProduct(productId: number) {
+//returns a Promise of  ProductShape type
+
+export async function getProductById(productId: number): Promise<ProductShape> {
     try {
         const res = await fetch(`${BASE_URL}/${productId}`)
-        console.log(res instanceof Response); // true
-        console.log(res.status);              // 200
-        console.log(res.ok);                  // true
-        console.log(res.headers.get("content-type")); // application/json; charset=UTF-8
-        console.log(res.bodyUsed);            // false
 
-        const data = await res.json();
-        console.log(data.title);              // "Async JavaScript"
+        
+        //did not use Promise<ProductShape | undefined> because then 
+        // I would have to check for undefined when calling the function
+        //so the function either returns a product or fails but, fetch only 
+        // throws on network failures so 404 or 500 still succeeds, check if res.ok is false
+        if (!res.ok){
+            throw new Error(`Request failed with status ${res.status}`)
+        }
+
+
+
+        //TypeScript only knows the result as "any"
+        //so you tell it the shape you expect with a type annotation: product: ProductShape 
+        const product: ProductShape = await res.json();
+        // console.log(product.title);
+        return product;
+
+
     } catch (err) {
         console.error(err);
+        //rethrow so the caller knows the request failed, means the function never reaches the end without returning
+        throw err;
     }
 }
 

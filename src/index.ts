@@ -1,5 +1,5 @@
 import { Product } from "./models/Product.js";
-import { getProduct } from "./services/apiServices.js";
+import { getProductById } from "./services/apiServices.js";
 
 console.log("E-commerce System Starting.......");
 
@@ -18,4 +18,9 @@ const headphones = new Product(product1);
 console.log(headphones.cost);
 console.log(headphones.displayDetails());
 
-getProduct(1)
+async function fetchProductById(): Promise<void> {
+  const product = await getProductById(10);
+  console.log(product.title);
+}
+
+fetchProductById();
