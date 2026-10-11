@@ -22,8 +22,6 @@ interface ProductShape {
 const products: ProductShape[] = productsData;
 
 class Product {
-  //private stops code outside the class from reading or changing a value directly
-  //readonly means the value can only be set in the constructor
   private readonly id: number;
   private readonly title: string;
   private readonly description: string;
@@ -53,13 +51,13 @@ class Product {
     Final Price: $${this.#getFinalPrice().toFixed(2)}`;
   }
 
-  /*create getters so that other code can read valiues
-    exposes a private value as read-only from outside
-    */
+  /*****************************Getters and Setters*****************************/
+  //price
   get cost(): number {
     return this.#price;
   }
 
+  //price
   set cost(val: number) {
     if (typeof val !== "number" || val < 0) {
       throw new Error("price must be a number 0 or higher");
@@ -67,6 +65,7 @@ class Product {
     this.#price = val;
   }
 
+   /***************Private Methods, only this class use**************************/
   //discount dollar amount
   #getDiscountAmount(): number {
     const discountAmout = calculateDiscount(
@@ -83,11 +82,13 @@ class Product {
     return finalPrice;
   }
 
+  //tax amount
   #getTaxAmount(): number {
     //taxes the discounted price
     return calculateTax(this.#getPriceWithDiscount(), this.category);
   }
 
+  //final price
   #getFinalPrice() {
     const discountedPrice = this.#getPriceWithDiscount();
     const taxAmount = this.#getTaxAmount();
