@@ -6,6 +6,7 @@ as data, not as JavaScript
 */
 // import productsData from "../data/products.json" with { type: "json" };
 
+//shape for https://dummyjson.com/products/[id] response, returns one product object by itself
 export interface ProductShape {
   //for one product, how the API sends it
   id: number;
