@@ -1,5 +1,5 @@
 import { calculateDiscount } from "../utils/discountCalculator.js";
-
+import { calculateTax } from "../utils/taxCalculator.js";
 /*
 This project uses "module": "NodeNext", which follows Node’s own rules for ES modules
 Node requires a JSON import to say plainly that the file is JSON
@@ -48,7 +48,9 @@ class Product {
     Price: $${this.#price.toFixed(2)}    
     Discount: ${this.discountPercentage}%  
     Save: $${this.#getDiscountAmount().toFixed(2)}  
-    Final Price: $${this.#getPriceAfterDiscount().toFixed(2)}`;
+    Price After Discount: $${this.#getPriceWithDiscount().toFixed(2)}
+    Tax Amount: $${this.#getTaxAmount().toFixed(2)}
+    Final Price: $${this.#getFinalPrice().toFixed(2)}`;
   }
 
   /*create getters so that other code can read valiues
@@ -66,7 +68,7 @@ class Product {
   }
 
   //discount dollar amount
-  #getDiscountAmount(): number{
+  #getDiscountAmount(): number {
     const discountAmout = calculateDiscount(
       this.#price,
       this.discountPercentage,
@@ -75,9 +77,20 @@ class Product {
   }
 
   //price after discount is applied
-  #getPriceAfterDiscount(): number {
+  #getPriceWithDiscount(): number {
     const discountAmount = this.#getDiscountAmount();
     const finalPrice = this.#price - discountAmount;
+    return finalPrice;
+  }
+
+  #getTaxAmount(): number {
+    return calculateTax(this.#price, this.category);
+  }
+
+  #getFinalPrice() {
+    const discountedPrice = this.#getPriceWithDiscount();
+    const taxAmount = this.#getTaxAmount();
+    const finalPrice = discountedPrice + taxAmount;
     return finalPrice;
   }
 }
