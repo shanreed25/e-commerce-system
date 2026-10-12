@@ -3,15 +3,16 @@ import type { ProductShape } from "../types/productShape.js";
 import type { ProductsListShape } from "../types/productsListShape.js";
 
 const BASE_URL = 'https://dummyjson.com/products';
-
+const FIELDS = 'select=title,description,category,price,discountPercentage,rating'
 
 console.log("API.......");
 
+// functions returns only title,description,category,price,discountPercentage,rating
 
-
+//get all products, 
 export async function getProducts(): Promise<ProductShape[]> {
     try {
-        const res = await fetch(`${BASE_URL}`)
+        const res = await fetch(`${BASE_URL}?${FIELDS}`)
 
         if (!res.ok){
             throw new Error(`Request failed with status ${res.status}`)
@@ -30,11 +31,34 @@ export async function getProducts(): Promise<ProductShape[]> {
     }
 }
 
-//returns a Promise of  ProductShape type
+//get limited amout of products
+export async function getProductsLimit(limit: number, skip?:number): Promise<ProductShape[]> {
+    try {
+        const endpoint = skip ? `${BASE_URL}?limit=${limit}&skip=${skip}&${FIELDS}` : `${BASE_URL}?limit=${limit}&${FIELDS}`
 
+        const res = await fetch(endpoint)
+
+        if (!res.ok){
+            throw new Error(`Request failed with status ${res.status}`)
+        }
+
+        const data: ProductsListShape = await res.json();
+
+        // data is the wrapper object, not a product, so TypeScript errors here if the return type is not Promise<ProductsListShape>
+        //return data//retuens the whole wrapper
+        return data.products;//return just the array of products, because the return type is Promise<ProductShape[]>
+
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+//get product by id
 export async function getProductById(productId: number): Promise<ProductShape> {
     try {
-        const res = await fetch(`${BASE_URL}/${productId}`)
+        const res = await fetch(`${BASE_URL}/${productId}?${FIELDS}`)
 
         
         //did not use Promise<ProductShape | undefined> because then 
@@ -51,7 +75,7 @@ export async function getProductById(productId: number): Promise<ProductShape> {
         //so you tell it the shape you expect with a type annotation: product: ProductShape 
         const product: ProductShape = await res.json();
         // console.log(product.title);
-        return product;
+        return product;//returns a Promise of  ProductShape type
 
 
     } catch (err) {

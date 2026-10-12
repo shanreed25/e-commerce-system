@@ -1,6 +1,5 @@
 import { Product } from "./models/Product.js";
-import { getProductById } from "./services/apiServices.js";
-import { getProducts } from "./services/apiServices.js";
+import { getProducts, getProductsLimit, getProductById } from "./services/apiServices.js";
 
 /*
 This project uses "module": "NodeNext", which follows Node’s own rules for ES modules
@@ -12,20 +11,46 @@ import productData from "./data/product.json" with { type: "json" };//used to se
 import productsList from "./data/products.json" with {type: "json"}
 console.log("E-commerce System Starting.......");
 
+//Testing Code===============================================================================
+// const headphones = new Product(productData);
 
-const headphones = new Product(productData);
+// console.log(headphones.cost);
+// console.log(headphones.displayDetails());
 
-console.log(headphones.cost);
-console.log(headphones.displayDetails());
+// const products = productsList.products;
 
-const products = productsList.products;
+// products.forEach(product => {
+//   const newProduct = new Product(product);
+//   console.log(newProduct.displayDetails());
+// })
 
-products.forEach(product => {
+// //==========================================================================================
+// //using Promise<void> because the function does not return anything
+// async function fetchAllProducts(): Promise<void>{
+//   const products = await getProducts();
+//   products.forEach(product => {
+//   const newProduct = new Product(product);
+//   console.log(newProduct.displayDetails());
+// })
+// }
+
+// fetchAllProducts();
+// //==========================================================================================
+
+
+//==========================================================================================
+async function fetchSomeProducts(): Promise<void>{
+  const products = await getProductsLimit(3);
+  products.forEach(product => {
   const newProduct = new Product(product);
   console.log(newProduct.displayDetails());
 })
+}
 
-// async function fetchProducts
+fetchSomeProducts();
+//==========================================================================================
+
+
 
 // async function fetchProductById(): Promise<void> {
 //   const product = await getProductById(10);
