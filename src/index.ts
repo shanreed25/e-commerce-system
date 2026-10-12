@@ -25,51 +25,86 @@ console.log("E-commerce System Starting.......");
 //   console.log(newProduct.displayDetails());
 // })
 
-// //==========================================================================================
-// //using Promise<void> because the function does not return anything
-// async function fetchAllProducts(): Promise<void>{
-//   const products = await getProducts();
-//   products.forEach(product => {
-//   const newProduct = new Product(product);
-//   console.log(newProduct.displayDetails());
-// })
-// }
-
-// fetchAllProducts();
-// //==========================================================================================
-
-
-// //==========================================================================================
-// async function fetchSomeProducts(): Promise<void>{
-//   const products = await getProductsLimit(3);
-//   products.forEach(product => {
-//   const newProduct = new Product(product);
-//   console.log(newProduct.displayDetails());
-// })
-// }
-
-// fetchSomeProducts();
-// //==========================================================================================
 
 
 
-async function fetchProductById(): Promise<void> {
+
+
+
+//==========================================================================================
+async function fetchSomeProducts(limit: number, skip?:number): Promise<void>{
   try {
-    const product = await getProductById(10);
+    const products = await getProductsLimit(limit);
+    products.forEach(product => {
+    const newProduct = new Product(product);
+    console.log(newProduct.displayDetails());
+    })
+  } catch (err) {
+    handleError(err)
+  }
+
+
+}
+
+// fetchSomeProducts(3);
+//==========================================================================================
+
+
+//==========================================================================================
+async function fetchProductById(id: number): Promise<void> {
+  try {
+    const product = await getProductById(id);
     const newProduct = new Product(product);
     console.log(newProduct.displayDetails());
   } catch (err) {
     handleError(err)
   }
-  
-  console.log("Program running");
 }
 
-fetchProductById();
+// fetchProductById(10);
+//==========================================================================================
 
-// const products: ProductShape[] = productsData;
+//==========================================================================================
+//using Promise<void> because the function does not return anything
+async function fetchAllProducts(): Promise<void>{
+  try {
+    const products = await getProducts();
+    products.forEach(product => {
+    const newProduct = new Product(product);
+    console.log(newProduct.displayDetails());
+    })
+  } catch (err) {
+    handleError(err)
+  }
+}
 
-// getProductById(635)
+// fetchAllProducts();
+//==========================================================================================
+
+function main(){
+  let userInput: number;
+  do{
+    userInput = Number(prompt("Enter:\n 1 to get all products\n 2 to get a single product\n 3 to get a limited amount of products"));
+  } 
+  while(userInput !== 1 && userInput !== 2 && userInput !== 3)
 
 
-// handleError(new Error("Error here"))
+  switch(userInput){
+    case 1:
+      //get all products
+      getProducts()
+      break;
+    case 2:
+      //get a single product
+      const id = Number(prompt("Enter: a product id"));
+      fetchProductById(id);
+    case 3:
+      //get limited products
+      getProductsLimit(10)
+    default:
+      getProducts()
+  }
+  console.log(userInput);
+}
+
+main();

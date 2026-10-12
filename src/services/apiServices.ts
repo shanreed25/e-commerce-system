@@ -4,7 +4,7 @@ import type { ProductsListShape } from "../types/productsListShape.js";
 import { APIError } from "../utils/errorHandler.js";
 
 
-const BASE_URL = 'https://duyjson.com/products';
+const BASE_URL = 'https://dummyjson.com/products';
 const FIELDS = 'select=title,description,category,price,discountPercentage,rating'
 
 console.log("API.......");
@@ -17,7 +17,7 @@ export async function getProducts(): Promise<ProductShape[]> {
         const res = await fetch(`${BASE_URL}?${FIELDS}`)
 
         if (!res.ok){
-            throw new APIError("`Request failed with status", res.status)
+            throw new APIError("No Products Found", res.status)
         }
 
         const data: ProductsListShape = await res.json();
@@ -29,7 +29,9 @@ export async function getProducts(): Promise<ProductShape[]> {
 
 
     } catch (err) {
-        console.error(err);
+        if (err instanceof APIError){
+            throw err;
+        }
         throw err;
     }
 }
@@ -43,14 +45,16 @@ export async function getProductsLimit(limit: number, skip?:number): Promise<Pro
         const res = await fetch(endpoint)
 
         if (!res.ok){
-            throw new APIError("`Request failed with status", res.status)
+            throw new APIError("Something went wrong:", res.status)
         }
 
         const data: ProductsListShape = await res.json();
         return data.products;
 
     } catch (err) {
-        // console.error(err);
+        if (err instanceof APIError){
+            throw err;
+        }
         throw err;
     }
 }
@@ -84,7 +88,7 @@ export async function getProductById(productId: number): Promise<ProductShape> {
         // request failed, means the function never reaches the end
         //  without returning
         if (err instanceof APIError){
-            throw err;// 
+            throw err;
         }
 
         //any other errors
