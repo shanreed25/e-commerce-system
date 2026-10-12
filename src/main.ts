@@ -34,7 +34,7 @@ console.log("E-commerce System Starting.......");
 //==========================================================================================
 async function fetchSomeProducts(limit: number, skip?:number): Promise<void>{
   try {
-    const products = await getProductsLimit(limit);
+    const products = await getProductsLimit(limit, skip);
     products.forEach(product => {
     const newProduct = new Product(product);
     console.log(newProduct.displayDetails());
@@ -92,7 +92,7 @@ function main(){
   switch(userInput){
     case 1:
       //get all products
-      getProducts()
+      fetchAllProducts()
       break;
     case 2:
       //get a single product
@@ -100,7 +100,7 @@ function main(){
       fetchProductById(id);
     case 3:
       //get limited products
-      getProductsLimit(10)
+      fetchSomeProducts(10,10)
     default:
       getProducts()
   }

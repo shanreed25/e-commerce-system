@@ -37,12 +37,11 @@ export async function getProducts(): Promise<ProductShape[]> {
 }
 
 //get limited amout of products
-export async function getProductsLimit(limit: number, skip?:number): Promise<ProductShape[]> {
+//skip = 0 is the API's default
+export async function getProductsLimit(limit: number, skip = 0): Promise<ProductShape[]> {
     try {
-        //skip is optional, so check and choose the url based on if it is undefined or not
-        const endpoint = skip ? `${BASE_URL}?limit=${limit}&skip=${skip}&${FIELDS}` : `${BASE_URL}?limit=${limit}&${FIELDS}`
 
-        const res = await fetch(endpoint)
+        const res = await fetch(`${BASE_URL}?limit=${limit}&skip=${skip}&${FIELDS}`)
 
         if (!res.ok){
             throw new APIError("Something went wrong:", res.status)
