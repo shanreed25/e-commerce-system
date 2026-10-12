@@ -1,11 +1,10 @@
 import { Product } from "./models/Product.js";
 import { GroceryProduct } from "./models/GroceryProduct.js";
 import { getProducts, getProductsLimit, getProductById, getProductsByCategory } from "./services/apiService.js";
-import { APIError, handleError } from "./utils/errorHandler.js";
+import { handleError } from "./utils/errorHandler.js";
 import type { ProductShape } from "./types/productShape.js";
 import { calculateDiscount } from "./utils/discountCalculator.js";
 import { calculateTax } from "./utils/taxCalculator.js";
-import type { ProductsListShape } from "./types/productsListShape.js";
 
 
 
@@ -110,7 +109,7 @@ function handleUserInput(userInput: number){
       //get limited products
       fetchProductsByCategory("groceries")
       break;
-    case 4:
+    case 5:
       //get limited products
       demoErrorHandling()
       break;

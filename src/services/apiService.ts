@@ -115,11 +115,17 @@ export async function getProductById(productId: number): Promise<ProductShape> {
 //get products by category
 export async function getProductsByCategory(category: string): Promise<ProductShape[]>{
     try {
-        const res = await fetch(`${BASE_URL}/category/${category}`)
+        const res = await fetch(`${BASE_URL}/category/${category}?${FIELDS}`)
         if (!res.ok){
             throw new APIError(`No products found for the ${category} category`, res.status)
         }
         const data: ProductsListShape = await res.json();
+        //the API returns a empty list and status is 
+        // still 200 for a category that does not exist
+        //the !res.ok check doe not catch it
+        if (data.products.length === 0){
+            throw new APIError(`No products found for the ${category} category`, 404)
+        }
         return data.products
     } catch (err) {
         if (err instanceof APIError){

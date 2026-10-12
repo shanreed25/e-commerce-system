@@ -51,7 +51,7 @@ npm run watch
 npm start
 ```
 
-Node has no `prompt()`, so the terminal run skips the menu and runs a fixed demo: it fetches the default product list (30 products, because the API returns 30 when no limit is sent), fetches the product with id 20, fetches 5 products after skipping the first 20, and then runs the error handling demo. Each list ends with the total tax for the products shown.
+Node has no `prompt()`, so the terminal run skips the menu and runs a fixed demo: it fetches the default product list (30 products, because the API returns 30 when no limit is sent), fetches the product with id 20, fetches 5 products after skipping the first 20, fetches every product in the `groceries` category, and then runs the error handling demo. Each list ends with the total tax for the products shown.
 
 ### Option 2: Run in the browser
 
@@ -60,7 +60,8 @@ Open `index.html` in a browser and open the console. The page loads `dist/main.j
 1. Get the default product list (30 products)
 2. Get a single product by id
 3. Get a limited amount of products (5 products, skipping the first 20)
-4. See the error handling demo
+4. Get all products in the `groceries` category
+5. See the error handling demo
 
 ## Features
 
@@ -68,7 +69,7 @@ Open `index.html` in a browser and open the console. The page loads `dist/main.j
 - **Inheritance:** `GroceryProduct` extends `Product` and overrides `displayDetails()`. `createProduct()` in `main.ts` picks the class based on the product category.
 - **Discount calculator:** returns the dollar amount a product is discounted by.
 - **Tax calculator:** returns the dollar amount of tax. The default rate is 4.75%, and products in the `groceries` category are taxed at 3%. Tax is calculated on the discounted price. `main.ts` also uses it to print the total tax for each list of products.
-- **API service:** async functions using `fetch` with try/catch to get all products, a limited amount of products, or one product by id.
+- **API service:** async functions using `fetch` with try/catch to get all products, a limited amount of products, one product by id, or all products in a category.
 - **Error handling:** a custom `APIError` class and a `handleError()` function that gives a clear message for API errors, network failures, invalid JSON, other errors, and thrown values that are not errors.
 
 ## Project Structure
@@ -100,3 +101,23 @@ e-commerce-system/
     ├── .gitignore
     └── README.md
 ```
+## Reflection Questions
+#### How I implemented TypeScript features and OOP principles
+- used TypeScript’s type system to describe the API data
+- created `ProductShape` and `ProductsListShape` interfaces so every fetch function has a typed return value, such as `Promise<ProductShape[]>`
+- used strict mode and import type to keep types and values clearly separate
+- for OOP, my `Product` class keeps the price in a #private field with a getter and a setter that rejects negative values
+- added a GroceryProduct subclass that extends Product and overrides displayDetails(), which shows inheritance and polymorphism
+- changed the other fields from private to protected so the subclass could use them
+
+#### The challenges I encountered and how I overcame them
+- fetch does not throw on a 404 or 500, so I checked res.ok and threw my own APIError
+- found that the API answers an unknown category with a 200 and an empty list, so I added a check that throws a 404 APIError when the result is empty
+- prompt() does not exist in Node, so npm start crashed, and then fixed it by checking whether window exists, giving the browser an interactive menu and the terminal a fixed demo
+- switch statement also had a missing break and a duplicate case that ran the wrong code until I tracked them down
+- learned the API returns only 30 products unless a limit is set, which I plan to fix in version 2 by merging my two list functions
+
+#### How I handled asynchronous operations and error management
+- every fetch function uses `async/await` with `try/catch`
+- the API service rethrows errors, and `main.ts` catches them and calls `handleError()`, which gives a clear message for API errors, network failures, bad JSON, and other thrown values
+- because the error is caught, the program keeps running after a failure, and I showed this with an error demo that triggers each case in sequence.
