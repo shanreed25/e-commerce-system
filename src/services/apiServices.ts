@@ -1,6 +1,8 @@
 // 'ProductShape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled
 import type { ProductShape } from "../types/productShape.js";
 import type { ProductsListShape } from "../types/productsListShape.js";
+import { APIError } from "../utils/errorHandler.js";
+
 
 const BASE_URL = 'https://dummyjson.com/products';
 const FIELDS = 'select=title,description,category,price,discountPercentage,rating'
@@ -15,7 +17,7 @@ export async function getProducts(): Promise<ProductShape[]> {
         const res = await fetch(`${BASE_URL}?${FIELDS}`)
 
         if (!res.ok){
-            throw new Error(`Request failed with status ${res.status}`)
+            throw new APIError("`Request failed with status", res.status)
         }
 
         const data: ProductsListShape = await res.json();
@@ -41,7 +43,7 @@ export async function getProductsLimit(limit: number, skip?:number): Promise<Pro
         const res = await fetch(endpoint)
 
         if (!res.ok){
-            throw new Error(`Request failed with status ${res.status}`)
+            throw new APIError("`Request failed with status", res.status)
         }
 
         const data: ProductsListShape = await res.json();
@@ -63,9 +65,10 @@ export async function getProductById(productId: number): Promise<ProductShape> {
         //did not use Promise<ProductShape | undefined> because then 
         // I would have to check for undefined when calling the function
         //so the function either returns a product or fails but, fetch only 
-        // throws on network failures so 404 or 500 still succeeds, check if res.ok is false
+        // throws on network failures so 404 or 500 still succeeds, 
+        // res.ok is true for sucess and false for anything else, so check if res.ok is false
         if (!res.ok){
-            throw new Error(`Request failed with status ${res.status}`)
+            throw new APIError("`Request failed with status", res.status)
         }
 
         //TypeScript only knows the result as "any"
