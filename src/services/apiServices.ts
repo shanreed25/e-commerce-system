@@ -20,7 +20,8 @@ export async function getProducts(): Promise<ProductShape[]> {
 
         const data: ProductsListShape = await res.json();
 
-        // data is the wrapper object, not a product, so TypeScript errors here if the return type is not Promise<ProductsListShape>
+        // data is the wrapper object, not a product, so TypeScript 
+        // errors here if the return type is not Promise<ProductsListShape>
         //return data//retuens the whole wrapper
         return data.products;//return just the array of products, because the return type is Promise<ProductShape[]>
 
@@ -34,6 +35,7 @@ export async function getProducts(): Promise<ProductShape[]> {
 //get limited amout of products
 export async function getProductsLimit(limit: number, skip?:number): Promise<ProductShape[]> {
     try {
+        //skip is optional, so check and choose the url based on if it is undefined or not
         const endpoint = skip ? `${BASE_URL}?limit=${limit}&skip=${skip}&${FIELDS}` : `${BASE_URL}?limit=${limit}&${FIELDS}`
 
         const res = await fetch(endpoint)
@@ -43,10 +45,7 @@ export async function getProductsLimit(limit: number, skip?:number): Promise<Pro
         }
 
         const data: ProductsListShape = await res.json();
-
-        // data is the wrapper object, not a product, so TypeScript errors here if the return type is not Promise<ProductsListShape>
-        //return data//retuens the whole wrapper
-        return data.products;//return just the array of products, because the return type is Promise<ProductShape[]>
+        return data.products;
 
 
     } catch (err) {
@@ -69,8 +68,6 @@ export async function getProductById(productId: number): Promise<ProductShape> {
             throw new Error(`Request failed with status ${res.status}`)
         }
 
-
-
         //TypeScript only knows the result as "any"
         //so you tell it the shape you expect with a type annotation: product: ProductShape 
         const product: ProductShape = await res.json();
@@ -80,41 +77,8 @@ export async function getProductById(productId: number): Promise<ProductShape> {
 
     } catch (err) {
         console.error(err);
-        //rethrow so the caller knows the request failed, means the function never reaches the end without returning
+        //rethrow so the caller knows the request failed, means the 
+        // function never reaches the end without returning
         throw err;
     }
 }
-
-
-// /*
-// Get a single product
-// */
-// fetch(`${BASE_URL}/555555555`)
-// .then(res => res.json())
-// .then(console.log);
-
-
-// /*
-// Limit and skip products
-// pass limit and skip params to limit and skip the results for pagination, and use limit=0 to get all items
-//  pass select as query params with comma-separated values to select specific data
-// */
-// fetch(`${BASE_URL}?limit=10&skip=10&select=title,price`)
-// .then(res => res.json())
-// .then(console.log);
-
-
-// /*
-// Get products category list
-// */
-// fetch(`${BASE_URL}/category-list`)
-// .then(res => res.json())
-// .then(console.log);
-
-// /*
-// Get products by a category groceries
-// Ids: 16 to 42
-// */
-// fetch(`${BASE_URL}/category/groceries`)
-// .then(res => res.json())
-// .then(console.log);

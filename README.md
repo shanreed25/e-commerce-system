@@ -32,25 +32,29 @@ node dist/index.js
 
 ## Project Structure
 ```
- e-commerce-system/
-    ├── src/
-    │   ├── index.ts              Entry point
+e-commerce-system/
+    ├── src/                         TypeScript source
+    │   ├── index.ts                 Entry point
     │   ├── data/
-    │   │   └── products.json     Local sample product data
+    │   │   ├── product.json         Sample of one product response
+    │   │   └── products.json        Sample of the full product list response
     │   ├── types/
-    │   │   └── types.ts          ProductShape interface (+ JSON import)
+    │   │   ├── productShape.ts      ProductShape interface (one product)
+    │   │   └── productsListShape.ts ProductsListShape interface ({ products: ProductShape[] })
     │   ├── models/
-    │   │   └── Product.ts        Product class
+    │   │   └── Product.ts           Product class
     │   ├── services/
-    │   │   └── apiServices.ts    getProductById() for the DummyJSON API
+    │   │   └── apiServices.ts       fetch functions for DummyJSON
     │   └── utils/
     │       ├── discountCalculator.ts
     │       ├── taxCalculator.ts
-    │       └── errorHandler.ts   (empty)
-    ├── dist/                     Compiled output (gitignored)
+    │       └── errorHandler.ts      (empty)
+    ├── dist/                        Compiled JavaScript (gitignored)
     ├── package.json
     ├── tsconfig.json
-    ├── .env                      (empty)
+    ├── .env                         (empty)
     ├── .gitignore
     └── README.md
+
 ```
+

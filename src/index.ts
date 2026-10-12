@@ -38,25 +38,26 @@ console.log("E-commerce System Starting.......");
 // //==========================================================================================
 
 
-//==========================================================================================
-async function fetchSomeProducts(): Promise<void>{
-  const products = await getProductsLimit(3);
-  products.forEach(product => {
-  const newProduct = new Product(product);
-  console.log(newProduct.displayDetails());
-})
-}
-
-fetchSomeProducts();
-//==========================================================================================
-
-
-
-// async function fetchProductById(): Promise<void> {
-//   const product = await getProductById(10);
-//   console.log(product.title);
+// //==========================================================================================
+// async function fetchSomeProducts(): Promise<void>{
+//   const products = await getProductsLimit(3);
+//   products.forEach(product => {
+//   const newProduct = new Product(product);
+//   console.log(newProduct.displayDetails());
+// })
 // }
 
-// fetchProductById();
+// fetchSomeProducts();
+// //==========================================================================================
+
+
+
+async function fetchProductById(): Promise<void> {
+  const product = await getProductById(10);
+  const newProduct = new Product(product);
+  console.log(newProduct.displayDetails());
+}
+
+fetchProductById();
 
 // const products: ProductShape[] = productsData;
