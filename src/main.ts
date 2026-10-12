@@ -3,6 +3,10 @@ import { GroceryProduct } from "./models/GroceryProduct.js";
 import { getProducts, getProductsLimit, getProductById } from "./services/apiService.js";
 import { APIError, handleError } from "./utils/errorHandler.js";
 import type { ProductShape } from "./types/productShape.js";
+import { calculateDiscount } from "./utils/discountCalculator.js";
+import { calculateTax } from "./utils/taxCalculator.js";
+
+
 
 /*
 This project uses "module": "NodeNext", which follows Node’s own rules for ES modules
@@ -17,7 +21,7 @@ console.log("E-commerce System Starting.......");
 //======================Error Handling Demo=================================================
 async function demoErrorHandling(): Promise<void>{
 
-  console.log("\n=========Demo 1: Network failure=========");4
+  console.log("\n=========Demo 1: Network failure=========");
   try {
     await fetch(`https://duumyjson.com/products`)
   } catch (err) {
@@ -71,6 +75,7 @@ async function runTerminalDemo(): Promise<void> {
   await fetchAllProducts()
   await fetchProductById(20)
   await fetchSomeProducts(5, 20)
+  await demoErrorHandling()
 }
 
 
@@ -84,6 +89,7 @@ async function fetchSomeProducts(limit: number, skip?:number): Promise<void>{
     const newProduct = createProduct(product)
     console.log(newProduct.displayDetails());
     })
+    displayTaxSummary(products);
   } catch (err) {
     handleError(err)
   }
@@ -111,11 +117,14 @@ async function fetchAllProducts(): Promise<void>{
     const newProduct = createProduct(product)
     console.log(newProduct.displayDetails());
     })
+    displayTaxSummary(products)
   } catch (err) {
     handleError(err)
   }
 }
 
+
+//============================Helper Functions==================================
 function createProduct(data: ProductShape): Product{
   if (data.category == "groceries"){
     return new GroceryProduct(data);
@@ -145,6 +154,17 @@ function handleUserInput(userInput: number){
     default:
       getProducts()
   }
+
+}
+
+function displayTaxSummary(products: ProductShape[]): void{
+  const tax = products.reduce((sum, p) => {
+    const discountedPrice = p.price - calculateDiscount(p.price, p.discountPercentage)
+    return sum + calculateTax(discountedPrice, p.category)
+
+  }, 0)
+
+  console.log(`Total Tax For ${products.length} products: $${tax.toFixed(2)}`);
 
 }
 //==========================================================================================
