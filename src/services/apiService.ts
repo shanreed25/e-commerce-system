@@ -111,3 +111,21 @@ export async function getProductById(productId: number): Promise<ProductShape> {
         throw err;
     }
 }
+
+//get products by category
+export async function getProductsByCategory(category: string): Promise<ProductShape[]>{
+    try {
+        const res = await fetch(`${BASE_URL}/category/${category}`)
+        if (!res.ok){
+            throw new APIError(`No products found for the ${category} category`, res.status)
+        }
+        const data: ProductsListShape = await res.json();
+        return data.products
+    } catch (err) {
+        if (err instanceof APIError){
+            throw err;
+        }
+        throw err;
+        
+    }
+}
