@@ -11,10 +11,20 @@ console.log("API.......");
 
 // functions returns only title,description,category,price,discountPercentage,rating
 
-//get all products, 
+//get 30 products 
 export async function getProducts(): Promise<ProductShape[]> {
-    try {
+    try { 
+        /*
+            DummyJSON limits results to 30 by default
+            comment this out to see all products
+        */
         const res = await fetch(`${BASE_URL}?${FIELDS}`)
+
+         /*
+            adding limit 0 will get all products
+            uncomment the line below to see all products:
+        */
+        // const res = await fetch(`${BASE_URL}?limit=0&${FIELDS}`)
 
         if (!res.ok){
             throw new APIError("No Products Found", res.status)
