@@ -1,5 +1,5 @@
 import { calculateDiscount } from "../utils/discountCalculator.js";
-import { calculateTax } from "../utils/taxCalculator.js";
+import { calculateTax, getTaxRate } from "../utils/taxCalculator.js";
 import type { ProductShape } from "../types/productShape.js";
 
 class Product {
@@ -29,6 +29,7 @@ class Product {
     Discount: ${this.discountPercentage}%  
     Save: $${this.#getDiscountAmount().toFixed(2)}  
     Price After Discount: $${this.getPriceWithDiscount().toFixed(2)}
+    Tax Rate: ${getTaxRate(this.category)}
     Tax Amount: $${this.#getTaxAmount().toFixed(2)}
     Final Price: $${this.#getFinalPrice().toFixed(2)}`;
   }

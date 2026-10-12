@@ -122,6 +122,31 @@ function createProduct(data: ProductShape): Product{
   }
   return new Product(data)
 }
+
+function handleUserInput(userInput: number){
+    switch(userInput){
+    case 1:
+      //get all products
+      fetchAllProducts()
+      break;
+    case 2:
+      //get a single product
+      const id = Number(prompt("Enter: a product id"));
+      fetchProductById(id);
+      break;
+    case 3:
+      //get limited products
+      fetchSomeProducts(5,20)
+      break;
+    case 4:
+      //get limited products
+      demoErrorHandling()
+      break;
+    default:
+      getProducts()
+  }
+
+}
 //==========================================================================================
 
 
@@ -152,27 +177,7 @@ function main(){
     console.log(userInput);
   }
 
-  switch(userInput){
-    case 1:
-      //get all products
-      fetchAllProducts()
-      break;
-    case 2:
-      //get a single product
-      const id = Number(prompt("Enter: a product id"));
-      fetchProductById(id);
-      break;
-    case 3:
-      //get limited products
-      fetchSomeProducts(5,20)
-      break;
-    case 4:
-      //get limited products
-      demoErrorHandling()
-      break;
-    default:
-      getProducts()
-  }
+  handleUserInput(userInput)
 }
 
 main();
