@@ -1,6 +1,8 @@
 import { Product } from "./models/Product.js";
+import { GroceryProduct } from "./models/GroceryProduct.js";
 import { getProducts, getProductsLimit, getProductById } from "./services/apiService.js";
 import { APIError, handleError } from "./utils/errorHandler.js";
+import type { ProductShape } from "./types/productShape.js";
 
 /*
 This project uses "module": "NodeNext", which follows Node’s own rules for ES modules
@@ -79,7 +81,7 @@ async function fetchSomeProducts(limit: number, skip?:number): Promise<void>{
     const products = await getProductsLimit(limit, skip);
     console.log(`========Skipping ${skip} Products And Getting ${limit} Products========`);
     products.forEach(product => {
-    const newProduct = new Product(product);
+    const newProduct = createProduct(product)
     console.log(newProduct.displayDetails());
     })
   } catch (err) {
@@ -92,7 +94,7 @@ async function fetchSomeProducts(limit: number, skip?:number): Promise<void>{
 async function fetchProductById(id: number): Promise<void> {
   try {
     const product = await getProductById(id);
-    const newProduct = new Product(product);
+     const newProduct = createProduct(product)
     console.log(`===============Getting Product With The Id of ${id}===============`);
     console.log(newProduct.displayDetails());
   } catch (err) {
@@ -106,7 +108,7 @@ async function fetchAllProducts(): Promise<void>{
     const products = await getProducts();
     console.log("==================Getting All Products===============");
     products.forEach(product => {
-    const newProduct = new Product(product);
+    const newProduct = createProduct(product)
     console.log(newProduct.displayDetails());
     })
   } catch (err) {
@@ -114,6 +116,12 @@ async function fetchAllProducts(): Promise<void>{
   }
 }
 
+function createProduct(data: ProductShape): Product{
+  if (data.category == "groceries"){
+    return new GroceryProduct(data);
+  }
+  return new Product(data)
+}
 //==========================================================================================
 
 
@@ -156,7 +164,7 @@ function main(){
       break;
     case 3:
       //get limited products
-      fetchSomeProducts(10,-10)
+      fetchSomeProducts(5,20)
       break;
     case 4:
       //get limited products

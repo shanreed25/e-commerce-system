@@ -4,13 +4,13 @@ import type { ProductShape } from "../types/productShape.js";
 
 class Product {
 
-  private readonly id: number;
-  private readonly title: string;
-  private readonly description: string;
-  private readonly category: string;
+  protected readonly id: number;
+  protected readonly title: string;
+  protected readonly description: string;
+  protected readonly category: string;
   #price: number;
-  private readonly discountPercentage: number;
-  private readonly rating: number;
+  protected readonly discountPercentage: number;
+  protected readonly rating: number;
 
   constructor(product: ProductShape) {
     this.id = product.id;
@@ -28,7 +28,7 @@ class Product {
     Price: $${this.#price.toFixed(2)}    
     Discount: ${this.discountPercentage}%  
     Save: $${this.#getDiscountAmount().toFixed(2)}  
-    Price After Discount: $${this.#getPriceWithDiscount().toFixed(2)}
+    Price After Discount: $${this.getPriceWithDiscount().toFixed(2)}
     Tax Amount: $${this.#getTaxAmount().toFixed(2)}
     Final Price: $${this.#getFinalPrice().toFixed(2)}`;
   }
@@ -58,7 +58,7 @@ class Product {
   }
 
   //price after discount is applied
-  #getPriceWithDiscount(): number {
+  protected getPriceWithDiscount(): number {
     const discountAmount = this.#getDiscountAmount();
     const finalPrice = this.#price - discountAmount;
     return finalPrice;
@@ -67,12 +67,12 @@ class Product {
   //tax amount
   #getTaxAmount(): number {
     //taxes the discounted price
-    return calculateTax(this.#getPriceWithDiscount(), this.category);
+    return calculateTax(this.getPriceWithDiscount(), this.category);
   }
 
   //final price
   #getFinalPrice() {
-    const discountedPrice = this.#getPriceWithDiscount();
+    const discountedPrice = this.getPriceWithDiscount();
     const taxAmount = this.#getTaxAmount();
     const finalPrice = discountedPrice + taxAmount;
     return finalPrice;
