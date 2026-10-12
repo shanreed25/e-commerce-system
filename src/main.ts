@@ -12,9 +12,10 @@ as data, not as JavaScript
 // import productsList from "./data/products.json" with {type: "json"}
 console.log("E-commerce System Starting.......");
 
-
+//======================Error Handling Demo=================================================
 async function demoErrorHandling(): Promise<void>{
 
+  console.log("\n=========Demo 1: Network failure=========");4
   try {
     await fetch(`https://duumyjson.com/products`)
   } catch (err) {
@@ -22,13 +23,13 @@ async function demoErrorHandling(): Promise<void>{
   }
 
 
-  console.log("\n=========Demo 1: Product Id That Does Not Exist=========");
+  console.log("\n=========Demo 2: Product Id That Does Not Exist=========");
   await fetchProductById(33333333);
 
-  console.log("\n=========Demo 2: Invalid Limit=========");
+  console.log("\n=========Demo 3: Invalid Limit=========");
   await fetchSomeProducts(-6);
 
-  console.log("\n=========Demo 3: Invalid Price on a Product=========");
+  console.log("\n=========Demo 4: Invalid Price on a Product=========");
   try {
     const product = new Product(
       {
@@ -47,7 +48,7 @@ async function demoErrorHandling(): Promise<void>{
     handleError(err)
   }
 
-  console.log("\n=========Demo 4: Thrown Value That Is Not An Error=========");
+  console.log("\n=========Demo 5: Thrown Value That Is Not An Error=========");
 
   try {
     throw "Anything can be thrown, this is just a string"
@@ -55,23 +56,28 @@ async function demoErrorHandling(): Promise<void>{
     handleError(err)
   }
 
-  console.log("\n=========Demo 5: Bad JSON=========");
+  console.log("\n=========Demo 6: Bad JSON=========");
   try {
     JSON.parse("<h1>This is HTML Not JSON</h1>")
   } catch(err){
     handleError(err)
   }
 }
-
-
-
-
-
 //==========================================================================================
+
+async function runTerminalDemo(): Promise<void> {
+  await fetchAllProducts()
+  await fetchProductById(20)
+  await fetchSomeProducts(5, 20)
+}
+
+
+
+//=========================API FUNCTIONS====================================================
 async function fetchSomeProducts(limit: number, skip?:number): Promise<void>{
   try {
     const products = await getProductsLimit(limit, skip);
-    console.log(`Skipping ${skip} Products And Getting ${limit} Products`);
+    console.log(`========Skipping ${skip} Products And Getting ${limit} Products========`);
     products.forEach(product => {
     const newProduct = new Product(product);
     console.log(newProduct.displayDetails());
@@ -83,29 +89,22 @@ async function fetchSomeProducts(limit: number, skip?:number): Promise<void>{
 
 }
 
-//==========================================================================================
-
-
-//==========================================================================================
 async function fetchProductById(id: number): Promise<void> {
   try {
     const product = await getProductById(id);
     const newProduct = new Product(product);
-    console.log(`Getting Product With The Id of ${id}`);
+    console.log(`===============Getting Product With The Id of ${id}===============`);
     console.log(newProduct.displayDetails());
   } catch (err) {
     handleError(err)
   }
 }
 
-//==========================================================================================
-
-//==========================================================================================
 //using Promise<void> because the function does not return anything
 async function fetchAllProducts(): Promise<void>{
   try {
     const products = await getProducts();
-    console.log("Getting All Products......");
+    console.log("==================Getting All Products===============");
     products.forEach(product => {
     const newProduct = new Product(product);
     console.log(newProduct.displayDetails());
@@ -117,7 +116,15 @@ async function fetchAllProducts(): Promise<void>{
 
 //==========================================================================================
 
+
+//==========================Main Entry Function============================================
 function main(){
+  //window only exists in a browser, so this for the code to run in Node
+  if (typeof window === "undefined"){
+    runTerminalDemo();
+    return;
+  }
+
   let inputValue: string | null;
   let userInput: number;
   const validOptions = [1, 2, 3, 4]
