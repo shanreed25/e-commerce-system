@@ -49,9 +49,8 @@ export async function getProductsLimit(limit: number, skip?:number): Promise<Pro
         const data: ProductsListShape = await res.json();
         return data.products;
 
-
     } catch (err) {
-        console.error(err);
+        // console.error(err);
         throw err;
     }
 }
@@ -68,20 +67,28 @@ export async function getProductById(productId: number): Promise<ProductShape> {
         // throws on network failures so 404 or 500 still succeeds, 
         // res.ok is true for sucess and false for anything else, so check if res.ok is false
         if (!res.ok){
-            throw new APIError("`Request failed with status", res.status)
+            throw new APIError(`Product with id ${productId} not found`, res.status)
         }
 
         //TypeScript only knows the result as "any"
-        //so you tell it the shape you expect with a type annotation: product: ProductShape 
+        //so you convert the response body from JSON text into a 
+        // JavaScript object with a type annotation: product: ProductShape 
         const product: ProductShape = await res.json();
         // console.log(product.title);
         return product;//returns a Promise of  ProductShape type
 
 
     } catch (err) {
-        console.error(err);
-        //rethrow so the caller knows the request failed, means the 
-        // function never reaches the end without returning
+        // console.error(err);
+        //rethrow the same object, unchanged so the caller knows the 
+        // request failed, means the function never reaches the end
+        //  without returning
+        if (err instanceof APIError){
+            throw err;// 
+        }
+
+        //any other errors
+        //rethrow everything unchanged and handleError decides what to print
         throw err;
     }
 }
