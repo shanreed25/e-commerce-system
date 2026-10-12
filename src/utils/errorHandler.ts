@@ -21,6 +21,7 @@ export function handleError(err: unknown): void {
 
          // TypeError is what fetch throws when the request cannot be made at all.
          //Network failure: turn off Wi-Fi and request a valid id to see
+         //or misspell the domai (for example dummyjsn.com) to see
         if (err instanceof TypeError){
             console.error("Could not reach the server. Please Try Again");
 

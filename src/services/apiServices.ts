@@ -4,7 +4,7 @@ import type { ProductsListShape } from "../types/productsListShape.js";
 import { APIError } from "../utils/errorHandler.js";
 
 
-const BASE_URL = 'https://dummyjson.com/products';
+const BASE_URL = 'https://duyjson.com/products';
 const FIELDS = 'select=title,description,category,price,discountPercentage,rating'
 
 console.log("API.......");
