@@ -44,6 +44,12 @@ export async function getProductsLimit(limit: number, skip = 0): Promise<Product
         const res = await fetch(`${BASE_URL}?limit=${limit}&skip=${skip}&${FIELDS}`)
 
         if (!res.ok){
+            if (limit < 0 || skip < 0){
+                throw new APIError("Limit value must be 0 or greater:", res.status)
+            }
+            if (skip < 0){
+                throw new APIError("Skip value must be 0 or greater:", res.status)
+            }
             throw new APIError("Something went wrong:", res.status)
         }
 
